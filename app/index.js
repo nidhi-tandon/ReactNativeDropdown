@@ -24,7 +24,9 @@ export default class App extends Component{
         }
     }
     _toggleModal(x,y){
-        this.setState({visibility:!this.state.visibility, x:x,y:y})
+        this.setState({visibility:!this.state.visibility, x:x,y:y}, ()=>{
+           // alert("state" +this.state.visibility)
+        })
 
 
     }
@@ -32,15 +34,18 @@ export default class App extends Component{
         return(
             <View style={styles.container}>
                 <View style={styles.innerContainer}>
-                    <Text style={styles.heading}>The World is your oyster!!</Text>
+                    <Text style={styles.heading}>{this.props.name}</Text>
                     <TouchableOpacity style={styles.iconContainer}
                             onPress={(value)=>{this._toggleModal(value.nativeEvent.pageX, value.nativeEvent.pageY)}}>
-                        <Icon name="dots-vertical" size={30} style={styles.icons}/>
+                        <Icon name="dots-vertical" size={30} style={styles.icons} color='rgb(76,76,76)'/>
                     </TouchableOpacity>
                 </View>
-                <Controller visibility={this.state.visibility}
-                x={this.state.x}
-                y={this.state.y}/>
+                {!this.props.renderedBack?
+                    <Controller visibility={this.state.visibility}
+                                x={this.state.x}
+                                y={this.state.y}/>
+                    :null}
+
             </View>
 
         )
@@ -55,18 +60,18 @@ const styles=StyleSheet.create({
     innerContainer:{
         height:screenHeight/12,
         width:screenWidth/1.2,
-        backgroundColor:'rgb(113,207,233)',
+        backgroundColor:'rgb(163,242,255)',
         margin:30,
-        //borderRadius:30,
+        borderRadius:20,
         justifyContent:'center',
         alignItems:'center',
-        borderColor:'rgb(71,84,93)',
+       borderColor:'rgb(76,76,76)',
         borderWidth:0.5,
         flexDirection:'row'
     },
     heading: {
-        color:'black',
-        fontSize: 10,
+        color:'rgb(76,76,76)',
+        fontSize: 15,
         //marginTop:40,
         //marginLeft:30
     },
