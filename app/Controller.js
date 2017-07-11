@@ -5,29 +5,14 @@ import React, {Component} from 'react'
 import {
     View,
     Text,
-    Modal,
-    StyleSheet,
-    TouchableOpacity,
-    Dimensions,
     FlatList,
-    TouchableHighlight
+    TouchableHighlight,
+    StyleSheet
 } from 'react-native'
-import AppContainer from './index'
 
 export default class ModalController extends Component {
     constructor(props) {
         super(props)
-        this.state = {
-            visibility: this.props.visibility,
-            option:'Oyster'
-        }
-    }
-
-    componentDidMount(){
-        //alert("in the component")
-        this.setState({visibility:this.props.visibility}, ()=>{
-            //alert("component" +this.state.visibility)
-        })
     }
 
     separator(){
@@ -41,29 +26,41 @@ export default class ModalController extends Component {
         )
     }
     _onPress(value){
-        this.setState({option:value, visibility:false}, ()=>{
-            alert("state change:"+ this.state.option)
-        })
-
+        this.props.func(value)
     }
+
     render(){
-        //alert("render" +this.props.visibility)
         return(
-            this.props.visibility? <View style={{height:80, width:120, backgroundColor:'white',
-                marginTop:this.props.y, marginLeft:this.props.x-100, position:'absolute', borderRadius:6,
-                elevation:5}}>
+            this.props.visibility? <View style={[styles.outerContainer,{marginTop:this.props.y, marginLeft:this.props.x-80}]}>
                 <FlatList
-                    data={[{key: 'Pearl'}, {key: 'Ruby'}]}
+                    data={[{key: 'Pearl'}, {key: 'Ruby'},{key: 'Oyster'}]}
                     renderItem={({item}) => (
                         <TouchableHighlight
-                            onPress={() => this._onPress(item.key)}>
-                            <Text>{item.key}</Text>
+                            onPress={() => this._onPress(item.key)}
+                            style={styles.listContainer}>
+                            <Text style={styles.textItems}>{item.key}</Text>
                         </TouchableHighlight>
                         )}
                     ItemSeparatorComponent={this.separator.bind(this)}
                 />
-                <AppContainer name={this.state.option} renderedBack={true}/>
             </View>: null
         )
     }
 }
+const styles=StyleSheet.create({
+    outerContainer:{
+        height:90,
+        width:80,
+        backgroundColor:'white',
+        position:'absolute',
+        borderRadius:6,
+    },
+    listContainer:{
+        backgroundColor:'white',
+        margin:5
+    },
+    textItems:{
+        fontSize:15,
+        color:'rgb(94,94,94)'
+    }
+})
